@@ -1,15 +1,28 @@
-### Powershell script for backing up Docker containers
-### Local backup, version 3
+### Powershell script for backing up Docker containers, Updating images, and pruning old images
 
-### Functions ###
+### Parameters ##
+param
+    (
+        [parameter(Mandatory=$True)]
+        [String] $Server
+        ,
+        [parameter(Mandatory=$True)]
+        [String] $Share
+        ,
+        [String] $SMB = $false
+        ,
+        [parameter(Dontshow)]
+        [String] $Username
+        ,
+        [parameter(Dontshow)]
+        [String] $Password
 
+    )
 
-### Script Start ##
-$Server="10.65.15.5"
-$Share="/mnt/ZFS2/dmzcache"
+# Default Variables
 $srcloc="/docker"
-$mount="/mnt/dmzcache"
-$destloc="/mnt/dmzcache/config-backup/$(hostname)/"
+$mount="/mnt/backup"
+$destloc= $mount + "/config-backup/$(hostname)/"
 $filename="$(hostname).docker-appdata.$(date +"%m_%d_%Y").zip"
 $fileloc=$destloc + $filename
 
@@ -18,8 +31,14 @@ If (Test-Path $mount){
 }
 else { 
     New-Item -ItemType directory $mount
-    mount -t nfs $server":"$Share $mount
 }
+
+If ($SMB) {
+$Connect = $Server + $Share
+mount -t cifs -o username=$User,password=$Password $Connect $mount
+}
+Else {mount -t nfs $server":"$Share $mount}
+
 If (Test-Path $destloc){
     $fileloc=$destloc + $filename
 }
@@ -32,7 +51,13 @@ $containers = docker container ls --format '{{.Names}}'
 #Stop Running containers
 docker stop $containers
 
-# ??? Update Images ???
+# Update Images
+$images = docker image ls --format '{{.Repository}}'
+
+foreach ($Image in $images){
+    $fullimage = $image + ":latest"
+    docker image pull $image
+}
 
 #Compress-Archive -Path $srcloc -DestinationPath $fileloc
 $command = "zip -r "+$fileloc+" "+$srcloc
@@ -47,6 +72,9 @@ Get-ChildItem $destloc | Where-Object { $_.LastWriteTime -lt $DatetoDelete } | R
 
 #Start Containers
 docker start $containers
+
+#Prune unused images
+docker image prune -a --force
 
 #unmount backup loc
 umount $mount
