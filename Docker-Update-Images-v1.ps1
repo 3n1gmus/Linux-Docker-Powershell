@@ -1,4 +1,6 @@
-﻿#Bash: for image in $(docker images --format "{{.Repository}}"); do docker pull $image; done
+﻿# Updates all currently installed images.
+
+# Bash: for image in $(docker images --format "{{.Repository}}"); do docker pull $image; done
 
 $images = docker image ls --format '{{.Repository}}'
 
