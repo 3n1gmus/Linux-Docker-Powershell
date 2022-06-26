@@ -9,7 +9,7 @@ param
         [parameter(Mandatory=$True)]
         [String] $Share
         ,
-        [String] $SMB = $false
+        [Bool] $SMB = $false
         ,
         [parameter(Dontshow)]
         [String] $Username
