@@ -12,10 +12,10 @@ param
         [Bool] $SMB = $false
         ,
         [parameter(Dontshow)]
-        [String] $Username
+        [String] $Username = $Null
         ,
         [parameter(Dontshow)]
-        [String] $Password
+        [String] $Password = $Null
 
     )
 
