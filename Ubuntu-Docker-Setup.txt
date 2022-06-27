@@ -43,4 +43,8 @@ echo "Unattended-Upgrade::Automatic-Reboot-Time \"02:00\";" | sudo tee -a /etc/a
 # Qemu Agent - Proxmox Monitoring
 apt -y install qemu-guest-agent
 
+# Update Logrotate configuration
+cp ./docker-backup.config /etc/logrotate.d/docker-backup.config
+mkdir /var/log/docker-backup
+
 #Finished
