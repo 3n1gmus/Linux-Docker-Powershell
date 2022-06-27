@@ -18,16 +18,12 @@ function LOG-Event
 param
     (
         [parameter(Mandatory=$True)]
-        [String] $Server
-        ,
+        [String] $Server,
         [parameter(Mandatory=$True)]
-        [String] $Share
-        ,
-        [Bool] $SMB = $false
-        ,
+        [String] $Share,
+        [Bool] $SMB = $false,
         [parameter(Dontshow)]
-        [String] $Username = $Null
-        ,
+        [String] $Username = $Null,
         [parameter(Dontshow)]
         [String] $Password = $Null
     )
