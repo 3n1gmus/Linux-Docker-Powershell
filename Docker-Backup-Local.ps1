@@ -1,5 +1,19 @@
 ### Powershell script for backing up Docker containers, Updating images, and pruning old images
 
+### Parameters ##
+param 
+    (
+        [parameter(Mandatory=$True)]
+        [String] $Server,
+        [parameter(Mandatory=$True)]
+        [String] $Share,
+        [Bool] $SMB = $false,
+        [parameter(Dontshow)]
+        [String] $Username = $Null,
+        [parameter(Dontshow)]
+        [String] $Password = $Null
+    )
+
 ### Functions
 
 function LOG-Event
@@ -13,20 +27,6 @@ function LOG-Event
 		Write-host $OUTMSG -ForegroundColor $Color
 		Add-content $LogFile -value $OUTMSG
 	}
-
-### Parameters ##
-param
-    (
-        [parameter(Mandatory=$True)]
-        [String] $Server,
-        [parameter(Mandatory=$True)]
-        [String] $Share,
-        [Bool] $SMB = $false,
-        [parameter(Dontshow)]
-        [String] $Username = $Null,
-        [parameter(Dontshow)]
-        [String] $Password = $Null
-    )
 
 # Global Log File
 $Global:LogPath = "/var/log/docker-backup/"
