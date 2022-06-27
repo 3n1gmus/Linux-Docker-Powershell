@@ -20,11 +20,11 @@ function LOG-Event
 	{
 		param (
 			[string]$MSG,
-			[string]$Color = "Black"
+			[string]$Color = "yellow"
 		)
 		$TimeStamp = (Get-Date).ToString("hh:mm:sstt")
 		$OUTMSG = "[$TimeStamp] - " + $MSG
-		Write-host $OUTMSG -ForegroundColor $Color
+		write-host $OUTMSG -ForegroundColor $Color
 		Add-content $LogFile -value $OUTMSG
 	}
 
