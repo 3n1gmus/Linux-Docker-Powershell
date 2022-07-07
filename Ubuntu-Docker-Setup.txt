@@ -2,7 +2,7 @@
 sudo apt-get update
 
 #Install Cockpit (NFS and ZIP)
-sudo apt-get install -y ca-certificates curl gnupg lsb-release wget apt-transport-https software-properties-common cockpit net-tools nfs-common unzip zip logrotate
+sudo apt-get install -y ca-certificates curl gnupg lsb-release wget apt-transport-https software-properties-common cockpit net-tools nfs-common unzip zip logrotate vim
 
 #Install Powershell
 ver=${lsb_release -sr}
@@ -46,5 +46,8 @@ apt -y install qemu-guest-agent
 # Update Logrotate configuration
 cp ./docker-backup.config /etc/logrotate.d/docker-backup.config
 mkdir /var/log/docker-backup
+
+#Set Timezone
+sudo timedatectl set-timezone America/Denver
 
 #Finished
