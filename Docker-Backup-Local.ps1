@@ -11,7 +11,9 @@ param
         [parameter(Dontshow)]
         [String] $Username = $Null,
         [parameter(Dontshow)]
-        [String] $Password = $Null
+        [String] $Password = $Null,
+        [parameter(Dontshow)]
+        [String] $domain = $Null
     )
 
 ### Functions
