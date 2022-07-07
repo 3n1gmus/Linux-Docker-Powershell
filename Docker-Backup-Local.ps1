@@ -13,7 +13,7 @@ param
         [parameter(Dontshow)]
         [String] $Password = $Null,
         [parameter(Dontshow)]
-        [String] $domain = $Null
+        [String] $Domain = $Null
     )
 
 ### Functions
