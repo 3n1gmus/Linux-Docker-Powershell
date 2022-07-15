@@ -7,7 +7,7 @@ param
         [String] $Server,
         [parameter(Mandatory=$True)]
         [String] $Share,
-        [Bool] $SMB = $false,
+        [String] $type = "nfs",
         [parameter(Dontshow)]
         [String] $Username = $Null,
         [parameter(Dontshow)]
@@ -49,16 +49,18 @@ If (!(Test-Path $mount)){
     New-Item -ItemType directory $mount
 }
 
-If ($SMB) {
-    $MSG = "Creating SMB Share"
-    LOG-Event $MSG
-    $Connect = $Server + $Share
-    mount -t cifs -o username=$User,password=$Password $Connect $mount
-}
-Else {
-    $MSG = "Creating NFS Share"
-    LOG-Event $MSG
-    mount -t nfs $server":"$Share $mount
+switch($type.ToLower()) {
+    "smb" {
+        $MSG = "Creating SMB Share"
+        LOG-Event $MSG
+        $Connect = $Server + $Share
+        mount -t cifs -o username=$User,password=$Password $Connect $mount 
+    }
+    default {
+        $MSG = "Creating NFS Share"
+        LOG-Event $MSG
+        mount -t nfs $server":"$Share $mount
+     }
 }
 
 If (!(Test-Path $destloc)){
