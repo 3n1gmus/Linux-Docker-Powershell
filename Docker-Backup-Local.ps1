@@ -54,7 +54,7 @@ switch($type.ToLower()) {
         $MSG = "Creating SMB Share"
         LOG-Event $MSG
         $Connect = $Server + $Share
-        mount -t cifs -o username=$User,password=$Password $Connect $mount 
+        mount -t cifs -o username=$Username,password=$Password $Connect $mount 
     }
     default {
         $MSG = "Creating NFS Share"
