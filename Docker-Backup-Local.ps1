@@ -51,13 +51,13 @@ If (!(Test-Path $mount)){
 
 switch($type.ToLower()) {
     "smb" {
-        $MSG = "Creating SMB Share"
+	$Connect = $Server + $Share    
+        $MSG = "Mounting SMB Share " + $Connect
         LOG-Event $MSG
-        $Connect = $Server + $Share
-        mount -t cifs -o username=$Username,password=$Password $Connect $mount 
+        mount -t cifs -o username=$Username,password=$Password,domain=$Domain $Connect $mount 
     }
     default {
-        $MSG = "Creating NFS Share"
+        $MSG = "Mounting NFS Share " + $server + ":" + $Share
         LOG-Event $MSG
         mount -t nfs $server":"$Share $mount
      }
