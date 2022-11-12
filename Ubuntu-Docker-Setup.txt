@@ -28,7 +28,8 @@ docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /va
 # Automatic Ubuntu Updates
 sudo apt install unattended-upgrades
 sudo apt install update-notifier-common
-sudo mv /etc/apt/apt.conf.d/50unattended-upgrades /etc/apt/apt.conf.d/50unattended-upgrades.original
+sudo mkdir /etc/orig_config
+sudo mv /etc/apt/apt.conf.d/50unattended-upgrades /etc/orig_config/50unattended-upgrades.original
 sudo touch /etc/apt/apt.conf.d/50unattended-upgrades
 echo "Unattended-Upgrade::Allowed-Origins {" | sudo tee -a /etc/apt/apt.conf.d/50unattended-upgrades
 echo "        \"\${distro_id}:\${distro_codename}\";" | sudo tee -a /etc/apt/apt.conf.d/50unattended-upgrades
