@@ -37,6 +37,8 @@ $Global:LogFile = $LogPath + "DockerBackup.log"
 if(!(Test-Path $LogPath)){New-Item -ItemType directory $LogPath}
 
 # Default Variables
+$ScriptDir = (Get-Location).Path
+$CredFile=$ScriptDir+"/.credential"
 $srcloc="/docker"
 $mount="/mnt/backup"
 $destloc= $mount + "/config-backup/$(hostname)/"
@@ -54,7 +56,11 @@ switch($type.ToLower()) {
 	$Connect = $Server + $Share    
         $MSG = "Mounting SMB Share " + $Connect
         LOG-Event $MSG
-        mount -t cifs -o username=$Username,password=$Password,domain=$Domain $Connect $mount 
+        "username=$username" | out-file -Append -FilePath $credfile
+        "password=$password" | out-file -Append -FilePath $credfile
+        "domain=$domain" | out-file -Append -FilePath $credfile
+        mount -t cifs -o credentials=$CredFile $Connect $mount
+        remove-item $CredFile -force 
     }
     default {
         $MSG = "Mounting NFS Share " + $server + ":" + $Share
