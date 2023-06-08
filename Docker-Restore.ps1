@@ -68,5 +68,6 @@ switch($type.ToLower()) {
      }
 }
 
-$MSG = "Restoring Backup"
+$MSG = "Restoring Backup " + $filename
 LOG-Event $MSG
+unzip $fileloc
