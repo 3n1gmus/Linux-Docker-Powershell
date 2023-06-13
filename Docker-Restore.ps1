@@ -71,3 +71,8 @@ switch($type.ToLower()) {
 $MSG = "Restoring Backup " + $filename
 LOG-Event $MSG
 unzip $fileloc
+
+#unmount backup loc
+$MSG = "Unmounting Backup Destination.<Operation completed>"
+LOG-Event $MSG
+umount $mount
