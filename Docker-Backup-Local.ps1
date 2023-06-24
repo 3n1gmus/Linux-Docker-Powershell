@@ -94,7 +94,7 @@ foreach ($Image in $images){
 #Compress-Archive -Path $srcloc -DestinationPath $fileloc
 $MSG = "Backing Up Docker APP Directories."
 LOG-Event $MSG
-$command = "zip -r "+$fileloc+" "+$srcloc
+$command = "zip -rv "+$fileloc+" "+$srcloc
 iex $command
 
 # Delete all Files in $destloc older than 30 day(s)
