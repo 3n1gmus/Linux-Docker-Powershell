@@ -1,4 +1,6 @@
 ### Powershell script for backing up Docker containers, Updating images, and pruning old images
+# Usage NFS: /usr/bin/pwsh /docker/scripts/Linux-Docker-Powershell/Docker-Backup-Local.ps1 -Server <Server> -Share <Share>
+# Usage Cifs: /usr/bin/pwsh /docker/scripts/Linux-Docker-Powershell/Docker-Backup-Local.ps1 -Server <Server> -Share <share> -type SMB -Username <User> -Password <Password> -Domain <AD domain>
 
 ### Parameters ##
 param 
