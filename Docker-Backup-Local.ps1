@@ -46,6 +46,7 @@ $mount="/mnt/backup"
 $destloc= $mount + "/config-backup/$(hostname)/"
 $filename="$(hostname).docker-appdata.$(date +"%m_%d_%Y").zip"
 $fileloc=$destloc + $filename
+$keep_backup = 10
 
 If (!(Test-Path $mount)){
     $MSG = "Creating Directory "+ $mount
@@ -101,7 +102,7 @@ LOG-Event $MSG
 $command = "zip -rvT "+$fileloc+" "+$srcloc
 iex $command
 
-# Delete all Files in $destloc older than 30 day(s)
+<# Delete all Files in $destloc older than 30 day(s)
 $MSG = "Pruning old backups"
 LOG-Event $MSG
 $Daysback = "-30"
@@ -109,6 +110,10 @@ $Daysback = "-30"
 $CurrentDate = Get-Date
 $DatetoDelete = $CurrentDate.AddDays($Daysback)
 Get-ChildItem $destloc | Where-Object { $_.LastWriteTime -lt $DatetoDelete } | Remove-Item
+#>
+
+# Delete all Files except last <num>
+Get-ChildItem $destloc | where{-not $_.PsIsContainer}| sort CreationTime -desc| select -Skip $keep_backup | Remove-Item -Force
 
 #Start Containers
 $MSG = "Starting Containers"
