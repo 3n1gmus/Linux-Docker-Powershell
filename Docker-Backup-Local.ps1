@@ -41,12 +41,12 @@ if(!(Test-Path $LogPath)){New-Item -ItemType directory $LogPath}
 # Default Variables
 $ScriptDir = (Get-Location).Path
 $CredFile=$ScriptDir+"/.credential"
-$srcloc="/docker"
-$mount="/mnt/backup"
-$destloc= $mount + "/config-backup/$(hostname)/"
+$srcloc="/docker" # Folder to Backup
+$mount="/mnt/backup" # Folder where the share will be mounted
+$destloc= $mount + "/config-backup/$(hostname)/"  # Destination folder for the backups.
 $filename="$(hostname).docker-appdata.$(date +"%m_%d_%Y").zip"
 $fileloc=$destloc + $filename
-$keep_backup = 10
+$keep_backup = 10 # Number of Backups to keep.
 
 If (!(Test-Path $mount)){
     $MSG = "Creating Directory "+ $mount
@@ -81,7 +81,7 @@ If (!(Test-Path $destloc)){
 }
 $containers = docker container ls --format '{{.Names}}'
 
-#Stop Running containers
+# Stop Running containers
 $MSG = "Stopping Containers"
 LOG-Event $MSG
 docker stop $containers
@@ -96,7 +96,7 @@ foreach ($Image in $images){
     docker image pull $image
 }
 
-#Compress-Archive -Path $srcloc -DestinationPath $fileloc
+# Compress-Archive -Path $srcloc -DestinationPath $fileloc
 $MSG = "Backing Up Docker APP Directories."
 LOG-Event $MSG
 $command = "zip -rvT "+$fileloc+" "+$srcloc
@@ -115,17 +115,17 @@ Get-ChildItem $destloc | Where-Object { $_.LastWriteTime -lt $DatetoDelete } | R
 # Delete all Files except last <num>
 Get-ChildItem $destloc | where{-not $_.PsIsContainer}| sort CreationTime -desc| select -Skip $keep_backup | Remove-Item -Force
 
-#Start Containers
+# Start Containers
 $MSG = "Starting Containers"
 LOG-Event $MSG
 docker start $containers
 
-#Prune unused images
+# Prune unused images
 $MSG = "Pruning Unused Docker Images"
 LOG-Event $MSG
 docker image prune -a --force
 
-#unmount backup loc
+# unmount backup location
 Start-Sleep -Seconds 2
 $MSG = "Unmounting Backup Destination.<Operation completed>"
 LOG-Event $MSG
