@@ -126,6 +126,7 @@ LOG-Event $MSG
 docker image prune -a --force
 
 #unmount backup loc
+Start-Sleep -Seconds 2
 $MSG = "Unmounting Backup Destination.<Operation completed>"
 LOG-Event $MSG
 umount $mount
