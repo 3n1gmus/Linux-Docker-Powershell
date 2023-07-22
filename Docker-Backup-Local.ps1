@@ -61,13 +61,15 @@ switch($type.ToLower()) {
         "username=$username" | out-file -Append -FilePath $credfile
         "password=$password" | out-file -Append -FilePath $credfile
         "domain=$domain" | out-file -Append -FilePath $credfile
-        mount -t cifs -o credentials=$CredFile $Connect $mount
+        try {mount -t cifs -o credentials=$CredFile $Connect $mount}
+        catch {LOG-Event "Mount Failed, Exiting."; exit}
         remove-item $CredFile -force 
     }
     default {
         $MSG = "Mounting NFS Share " + $server + ":" + $Share
         LOG-Event $MSG
-        mount -t nfs $server":"$Share $mount
+        try {mount -t nfs $server":"$Share $mount}
+        catch {LOG-Event "Mount Failed, Exiting."; exit}
      }
 }
 
