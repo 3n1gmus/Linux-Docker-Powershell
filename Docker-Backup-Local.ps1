@@ -62,7 +62,8 @@ switch($type.ToLower()) {
         "username=$username" | out-file -Append -FilePath $credfile
         "password=$password" | out-file -Append -FilePath $credfile
         "domain=$domain" | out-file -Append -FilePath $credfile
-        try {mount -t cifs -o credentials=$CredFile $Connect $mount}
+        $command = "mount -t cifs -o credentials="+$CredFile+" "+$Connect+" "+$mount
+        try {iex $command}
         catch {LOG-Event "Mount Failed, Exiting."; exit}
         remove-item $CredFile -force 
     }
